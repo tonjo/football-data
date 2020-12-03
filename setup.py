@@ -16,6 +16,6 @@ setup(
         "Programming Language :: Python :: 3.8"
     ],
     keywords="football football-data api",
-    install_requires=["requests"],
+    install_requires=['requests'],
     python_requires=">=3.6"
 )

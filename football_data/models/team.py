@@ -12,17 +12,18 @@ class Team():
     """
     The Team class.
     """
-    def __init__(self, team):
-        self.team_url = team["_links"]["self"]["href"]
-        self.fixtures_url = team["_links"]["fixtures"]["href"]
-        self.players_url = team["_links"]["players"]["href"]
-        self.badge_url = team["crestUrl"]
 
-        self.team_id = int(self.team_url.split("/")[-1])
-        self.code = team["code"]
-        self.name = team["name"]
-        self.shortname = team["shortName"]
-        self.squad_value = team["squadMarketValue"]
+    def __init__(self, team):
+        self.team_url = team['_links']['self']['href']
+        self.fixtures_url = team['_links']['fixtures']['href']
+        self.players_url = team['_links']['players']['href']
+        self.badge_url = team['crestUrl']
+
+        self.team_id = int(self.team_url.split('/')[-1])
+        self.code = team['code']
+        self.name = team['name']
+        self.shortname = team['shortName']
+        self.squad_value = team['squadMarketValue']
 
     def players(self):
         """
@@ -30,14 +31,14 @@ class Team():
         """
         response = requests.get(self.players_url, headers=headers()).json()
         return [Player(player, self.team_id, self.name)
-                for player in response["players"]]
+                for player in response['players']]
 
     def fixtures(self):
         """
         Returns a list of Fixture objects.
         """
         response = requests.get(self.fixtures_url, headers=headers()).json()
-        return [Fixture(fixture) for fixture in response["fixtures"]]
+        return [Fixture(fixture) for fixture in response['fixtures']]
 
     def depth(self, JSON=False):
         """
@@ -50,8 +51,8 @@ class Team():
             return dict(Counter(positions))
         else:
             # Create table
-            table = PrettyTable(["Position", "#"])
-            table.align["Position"] = "l"
+            table = PrettyTable(['Position", "  # '])
+            table.align['Position'] = "l"
 
             for position, amount in Counter(positions).items():
                 table.add_row([position, amount])
@@ -66,7 +67,7 @@ class Team():
 
         if league_code:
             if league_code not in LEAGUE_CODE.keys():
-                raise KeyError("Given league code does not exist!")
+                raise KeyError('Given league code does not exist!')
 
             competition_id = LEAGUE_CODE[league_code]
 
@@ -79,7 +80,7 @@ class Team():
             results = [fixture for fixture in fixtures if fixture.winner]
 
         if len(results) == 0:
-            raise ValueError("No results found for the given league code.")
+            raise ValueError('No results found for the given league code.')
 
         return results[:number]
 
@@ -91,7 +92,7 @@ class Team():
 
         if league_code:
             if league_code not in LEAGUE_CODE.keys():
-                raise KeyError("Given league code does not exist!")
+                raise KeyError('Given league code does not exist!')
 
             competition_id = LEAGUE_CODE[league_code]
 
@@ -105,7 +106,7 @@ class Team():
                        if not fixture.winner]
 
         if len(results) == 0:
-            raise ValueError("No fixtures found for the given league code.")
+            raise ValueError('No fixtures found for the given league code.')
 
         return results[:number]
 

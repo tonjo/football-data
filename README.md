@@ -35,9 +35,9 @@ Currently the way to use `football` is to instantiate a `Football` class using y
 
 ```python
 from football import Football
-football = Football("your_api_key")
+football = Football('your_api_key')
 
-manchester_united = football.team("Manchester United FC")
+manchester_united = football.team('Manchester United FC')
 ```
 
 The following (sub) resources are available
@@ -61,14 +61,14 @@ teams = football.teams()
 
 ```python
 # Get the Premier League table
-table = football.table("PL")
+table = football.table('PL')
 ```
 
 ### Get all fixtures of the given competition
 
 ```python
 # Get the fixtures of the Premier League
-fixtures = football.competition_fixtures("PL")
+fixtures = football.competition_fixtures('PL')
 ```
 
 ### Get all fixtures across competitions
@@ -88,7 +88,7 @@ fixture = football.fixture(159031)
 ```python
 # Get Manchester United's fixtures
 fixtures = football.team_fixtures(66)
-fixtures = football.team_fixtures("MUFC")
+fixtures = football.team_fixtures('MUFC')
 ```
 
 ### Get a team
@@ -96,7 +96,7 @@ fixtures = football.team_fixtures("MUFC")
 ```python
 # Get Manchester United
 team = football.team(66)
-team = football.team("Manchester United FC")
+team = football.team('Manchester United FC')
 ```
 
 ### Get all players of the given team
@@ -104,7 +104,7 @@ team = football.team("Manchester United FC")
 ```python
 # Get Manchester United's players
 players = football.players(66)
-players = football.players("ManU")
+players = football.players('ManU')
 ```
 
 ## Contributing

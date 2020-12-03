@@ -6,12 +6,13 @@ class Table():
     """
     The Table class.
     """
+
     def __init__(self, table):
-        self.table_url = table["_links"]["self"]["href"]
-        self.competition_url = table["_links"]["competition"]["href"]
-        self.league_name = table["leagueCaption"]
-        self.matchday = table["matchday"]
-        self.standing = [Standing(standing) for standing in table["standing"]]
+        self.table_url = table['_links']['self']['href']
+        self.competition_url = table['_links']['competition']['href']
+        self.league_name = table['leagueCaption']
+        self.matchday = table['matchday']
+        self.standing = [Standing(standing) for standing in table['standing']]
 
     def sort(self, column, reverse=False):
         """
@@ -29,11 +30,11 @@ class Table():
         """
         # Table header
         table = PrettyTable(
-            ["#", "Team", "Played", "Won", "Drawn", "Lost", "For", "Against",
-             "GD", "Points"])
+            ['  # ', 'Team', 'Played', 'Won', 'Drawn', 'Lost', 'For', 'Against',
+             'GD', 'oints'])
 
         # Align column left
-        table.align["Team"] = "l"
+        table.align['Team'] = 'l'
 
         # Add rows to the table
         for row in self.standing:
@@ -49,19 +50,20 @@ class Standing():
     """
     The Standing class.
     """
+
     def __init__(self, standing):
-        self.away_form = standing["away"]
-        self.badge = standing["crestURI"]
-        self.draws = standing["draws"]
-        self.goals_for = standing["goals"]
-        self.goals_against = standing["goalsAgainst"]
-        self.goal_difference = standing["goalDifference"]
-        self.home_form = standing["home"]
-        self.losses = standing["losses"]
-        self.points = standing["points"]
-        self.position = standing["position"]
-        self.team_url = standing["_links"]["team"]["href"]
-        self.team_name = standing["teamName"]
-        self.wins = standing["wins"]
+        self.away_form = standing['away']
+        self.badge = standing['crestURI']
+        self.draws = standing['draws']
+        self.goals_for = standing['goals']
+        self.goals_against = standing['goalsAgainst']
+        self.goal_difference = standing['goalDifference']
+        self.home_form = standing['home']
+        self.losses = standing['losses']
+        self.points = standing['points']
+        self.position = standing['position']
+        self.team_url = standing['_links']['team']['href']
+        self.team_name = standing['teamName']
+        self.wins = standing['wins']
 
         self.played = self.wins + self.draws + self.losses
