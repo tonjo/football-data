@@ -20,21 +20,21 @@ class Football(object):
     The Football class.
     """
 
-    API_URL = "http://api.football-data.org/v2/"
+    API_URL = 'http://api.football-data.org/v2/'
 
     def __init__(self, api_key=None):
         """
         Initialise a new instance of the Football class.
         """
         if not api_key:
-            if "FOOTBALL_API_KEY" in os.environ:
+            if 'FOOTBALL_API_KEY' in os.environ:
                 api_key = os.environ['FOOTBALL_API_KEY']
             else:
                 raise ValueError(
                     'FOOTBALL_API_KEY environment variable not set or no API key given.')
 
         self.api_key = api_key
-        self.headers = {"X-Auth-Token": api_key}
+        self.headers = {'X-Auth-Token': api_key}
 
     def competitions(self, season=None):
         """
