@@ -20,7 +20,7 @@ class Football(object):
     The Football class.
     """
 
-    API_URL = "http://api.football-data.org/v1/"
+    API_URL = "http://api.football-data.org/v2/"
 
     def __init__(self, api_key=None):
         """
