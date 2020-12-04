@@ -2,7 +2,10 @@
 
 # Resources
 
-Please consult [official docs](https://www.football-data.org/documentation/quickstart)
+Please consult official docs:
+
+- [Quick start](https://www.football-data.org/documentation/quickstart)
+- [API Reference](https://www.football-data.org/documentation/api)
 
 ### Match statuses
 

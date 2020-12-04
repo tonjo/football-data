@@ -8,7 +8,7 @@ Based on amosbastian [`football`](https://github.com/amosbastian/football)
 
 It takes a different approach, simplified, no models involved, all json responses are converted into objects, thanks to `SimpleNamespace`, so even if `football-data.org` api changes, probably no changes are required in this library.
 
-### Installing
+## Install
 
 It's in a early stage, install it from github like so
 
@@ -18,7 +18,7 @@ cd football_data
 pip install -e .
 ```
 
-### Usage
+## Usage
 
 Currently the way to use `football-data` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_DATA_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
 
@@ -29,18 +29,76 @@ football = FootballData('your_api_key')
 
 The following (sub) resources are available
 
-### Get all available competitions
+## Competitions
 
 ```python
 # All
 competitions = football.competitions()
+
 # Specific one with id
-competition = football.competition(2015)
-print(competition.name)
-print(competition.area.name)
+competition = football.competition(2000)
+print(f'{competition.code}, {competition.name}, {competition.area.name}')
+
+# ... or code
+competition = football.competition('WC)
+print(f'{competition.code}, {competition.name}, {competition.area.name}')
+
 ```
 
-### MORE to come
+### For all competition codes look into
+
+- [API Reference](https://www.football-data.org/documentation/api)
+  (search for Appendix Table of League-Codes)
+
+## Competition matches
+
+List all matches for a particular competition.
+
+```python
+# def competition_matches(self, competition, dateFrom=None, dateTo=None, stage=None, status=None, matchday=None, group=None, season=None):
+
+matches = football.competition_matches(2019)
+# OR
+matches = football.competition_matches('CL')
+
+# Filter for a particular status
+matches = football.competition_matches('CL', status='FINISHED')
+```
+
+### Available arguments (filters):
+
+- dateFrom
+- dateTo
+- stage
+- status
+- matchday
+- group
+- season
+
+## Matches
+
+List matches across (a set of) competitions.
+
+```python
+
+# Today's matches, any competition available
+matches = football.matches()
+
+# Today's matches, premier league only (code or id)
+matches = football.matches(competitions='PL')
+
+# Specific time frame matches, premier league and Champions League
+matches = football.matches(competitions='PL,CL', dateFrom='2020-03-03', dateTo='2020-03-04')
+```
+
+### Available arguments (filters):
+
+- competitions
+- dateFrom
+- dateTo
+- status
+
+# MORE coming
 
 ## Contributing
 
