@@ -10,7 +10,7 @@ It takes a different approach, simplified, no models involved, all json response
 
 ### Installing
 
-It's in a early stage, install it from githubmode like so
+It's in a early stage, install it from github like so
 
 ```bash
 git clone https://github.com/tonjo/football-data.git
