@@ -21,8 +21,8 @@ class Match():
         self.home_team = match['homeTeam']
         self.away_team = match['awayTeam']
         self.referees = match['referees']
-        if competition_id:
-            self.competition_id = competition_id
+        # TODO if getting match from match resource is different
+        self.competition_id = competition_id
 
     def __str__(self):
         # TODO verify full time / extra time
