@@ -52,12 +52,12 @@ class FootballData(object):
             competitions = []
         return competitions
 
-    def competition(self, competition_id):
+    def competition(self, competition):
         """
-        Returns a specific competition by its competition_id.
+        Returns a specific competition by its competition.
         """
 
-        url = self._generate_url(f'competitions/{competition_id}')
+        url = self._generate_url(f'competitions/{competition}')
         res = self._api_request(url)
 
         if res:
@@ -67,48 +67,25 @@ class FootballData(object):
             competition = None
         return competition
 
-    def teams(self, competition):
+    def competition_teams(self, competition=None):
         """
         Returns a list of Team objects of teams that are playing in the given
         competition.
         """
-        # Allow users to use both id or name
-        if isinstance(competition, str):
-            try:
-                competition = LEAGUE_CODE[competition]
-            except KeyError as error:
-                return error
+        # competition could be an id or a code like 'WC'
 
-        url = self._generate_url(f'competitions/{competition}/teams')
-        res = requests.get(url, headers=self.headers)  # .json()
-        json_tmp = json2obj(res.content)
-        return json_tmp.teams
-        # return [Team(team) for team in teams['teams']]
-
-    def table(self, competition, matchday=None):
-        """
-        Returns a Table object made from the table of the given competition.
-        """
-        # Allow users to use both id or name
-        if isinstance(competition, str):
-            try:
-                competition = LEAGUE_CODE[competition]
-            except KeyError as error:
-                return error
-
-        # Error checking for query parameter matchday
-        if matchday:
-            matchday = str(matchday)
-            pattern = re.compile(r"\d +")
-            if not pattern.match(matchday):
-                raise ValueError('matchday is invalid.')
-            matchday = {"matchday": matchday}
-
-        url = self._generate_url(
-            f'competitions/{competition}/leagueTable', matchday)
-        table = requests.get(url, headers=self.headers).json()
-
-        return Table(table)
+        if competition:
+            url = self._generate_url(f'competitions/{competition}/teams')
+            res = self._api_request(url)
+            if res:
+                json_tmp = json2obj(res)
+                return json_tmp.teams
+            else:
+                logger.error(f'teams: no data found')
+                return None
+        else:
+            logger.error(f'teams: specify competition')
+            return None
 
     def competition_matches(self, competition, time_frame=None):
         """
