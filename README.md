@@ -39,13 +39,13 @@ competitions = football.competitions()
 competition = football.competition(2000)
 print(f'{competition.code}, {competition.name}, {competition.area.name}')
 
-# ... or code
+# ... or code (WC = World Cup)
 competition = football.competition('WC)
 print(f'{competition.code}, {competition.name}, {competition.area.name}')
 
 ```
 
-### For all competition codes look into
+#### For all competition codes look into
 
 - [API Reference](https://www.football-data.org/documentation/api)
   (search for Appendix Table of League-Codes)
@@ -55,7 +55,6 @@ print(f'{competition.code}, {competition.name}, {competition.area.name}')
 List all matches for a particular competition.
 
 ```python
-# def competition_matches(self, competition, dateFrom=None, dateTo=None, stage=None, status=None, matchday=None, group=None, season=None):
 
 matches = football.competition_matches(2019)
 # OR
