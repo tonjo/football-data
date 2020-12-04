@@ -1,5 +1,5 @@
 """
-Contains the Football class used to interact with the API.
+Contains the FootballData class used to interact with the API.
 """
 import os
 import re
@@ -22,16 +22,16 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-class Football(object):
+class FootballData(object):
     """
-    The Football class.
+    The FootballData class.
     """
 
     API_URL = 'https://api.football-data.org/v2/'
 
     def __init__(self, api_key=None):
         """
-        Initialise a new instance of the Football class.
+        Initialise a new instance of the FootballData class.
         """
         if not api_key:
             if 'FOOTBALL_API_KEY' in os.environ:
@@ -45,37 +45,29 @@ class Football(object):
 
     def competitions(self):
         """
-        Returns a list of Competition objects of all the available
-        competitions.
+        Returns a list of all the available competitions.
         """
 
         url = self._generate_url('competitions')
         res = self._api_request(url)
         if res:
-            competitions = [Competition(competition)
-                            for competition in res['competitions']]
+            json_tmp = json2obj(res)
+            return json_tmp.competitions
         else:
             competitions = []
         return competitions
 
-    def competition(self, competition_id, season=None):
+    def competition(self, competition_id):
         """
-        Returns a Competition object of competition with the given id.
+        Returns a specific competition by its competition_id.
         """
-        # Error checking for query parameter season
-        if season:
-            # Do it this way, because API does not support other method
-            competitions = self.competitions(season)
-            for competition in competitions:
-                if competition.id == competition_id:
-                    return competition
 
-            raise ValueError('could not find competition.')
-
-        url = self._generate_url(f'competitions/{competition_id}')
+        url = f'competitions/{competition_id}'
         res = self._api_request(url)
+
         if res:
-            competition = Competition(res)
+            json_tmp = json2obj(res)
+            return json_tmp.competition
         else:
             competition = None
         return competition
@@ -152,13 +144,6 @@ class Football(object):
         res = self._api_request(url, False)
         json_tmp = json2obj(res)
         return json_tmp.matches
-
-        res = self._api_request(url)
-        if res:
-            matches = [Match(match) for match in res['matches']]
-        else:
-            matches = []
-        return matches
 
     def matches(self, time_frame=None, league_code=None):
         """
@@ -281,7 +266,7 @@ class Football(object):
 
         return url
 
-    def _api_request(self, url, json_format=True):
+    def _api_request(self, url, json_format=False):
         try:
             res_raw = requests.get(url, headers=self.headers)
             res = res_raw.json()

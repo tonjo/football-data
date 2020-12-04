@@ -3,20 +3,15 @@ Contains unit tests for all functions in football.py.
 """
 import os
 import unittest
-from football import Football
+from football import FootballData
 from football.models.competition import Competition
-from football.models.fixture import Match
-from football.models.player import Player
-from football.models.table import Standing
-from football.models.table import Table
-from football.models.team import Team
 
 
 class TestFootball(unittest.TestCase):
     """
     Class for unit testing football.py.
     """
-    football = Football(os.environ['FOOTBALL_API_KEY'])
+    football = FootballData(os.environ['FOOTBALL_API_KEY'])
 
     def test_competitions(self):
         """

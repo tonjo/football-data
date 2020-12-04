@@ -31,11 +31,11 @@ pip install -e .
 
 ### WORK IN PROGRESS
 
-Currently the way to use `football` is to instantiate a `Football` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
+Currently the way to use `football` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
 
 ```python
-from football import Football
-football = Football('your_api_key')
+from football import FootballData
+football = FootballData('your_api_key')
 
 manchester_united = football.team('Manchester United FC')
 ```
@@ -140,7 +140,7 @@ See also the list of [contributors](https://github.com/amosbastian/football/grap
 
 - All sub resources are now classes including functions to call retrieve additional information
 - Team related functions can now use the name, shortname or code of the team instead of just its ID
-- Football functions use classes instead
+- FootballData functions use classes instead
 - Unit tests for each function changed to test respective classes
 
 ##### Added
