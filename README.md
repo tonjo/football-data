@@ -1,6 +1,6 @@
 ## football
 
-A Python wrapper around the [football-data API](https://www.football-data.org) VERSION 2.
+A Python wrapper around the [football-data API](https://www.football-data.org) **VERSION 2**
 
 Based on amosbastian [`football`](https://github.com/amosbastian/football)
 
@@ -40,61 +40,7 @@ print(competition.name)
 print(competition.area.name)
 ```
 
-### Get all teams in the given competition
-
-```python
-teams = football.teams()
-```
-
-### Get the league table / current standings on the given competition
-
-```python
-# Get the Premier League table
-table = football.table('PL')
-```
-
-### Get all fixtures of the given competition
-
-```python
-# Get the fixtures of the Premier League
-fixtures = football.competition_matches('PL')
-```
-
-### Get all fixtures across competitions
-
-```python
-fixtures = football.fixtures()
-```
-
-### Get a single fixture
-
-```python
-fixture = football.fixture(159031)
-```
-
-### Get all fixtures of a given team
-
-```python
-# Get Manchester United's fixtures
-fixtures = football.team_fixtures(66)
-fixtures = football.team_fixtures('MUFC')
-```
-
-### Get a team
-
-```python
-# Get Manchester United
-team = football.team(66)
-team = football.team('Manchester United FC')
-```
-
-### Get all players of the given team
-
-```python
-# Get Manchester United's players
-players = football.players(66)
-players = football.players('ManU')
-```
+### MORE to come
 
 ## Contributing
 
