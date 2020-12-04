@@ -94,19 +94,19 @@ class TestFootball(unittest.TestCase):
         self.assertEqual(table.matchday, 1)
         self.assertRaises(ValueError, self.football.table, 445, "abc')
 
-    def test_competition_fixtures(self):
+    def test_competition_matches(self):
         """
-        Tests for the football.competition_fixtures function.
+        Tests for the football.competition_matches function.
         """
         # General tests
-        competition_fixtures = self.football.competition_fixtures(445)
-        self.assertIsInstance(competition_fixtures, list)
-        if len(competition_fixtures) > 0:
-            self.assertIsInstance(competition_fixtures[0], Fixture)
+        competition_matches = self.football.competition_matches(445)
+        self.assertIsInstance(competition_matches, list)
+        if len(competition_matches) > 0:
+            self.assertIsInstance(competition_matches[0], Fixture)
 
         # Test with query parameters
         self.assertRaises(
-            ValueError, self.football.competition_fixtures, 445, "abc')
+            ValueError, self.football.competition_matches, 445, "abc')
 
     def test_fixtures(self):
         """

@@ -11,7 +11,7 @@ from .models.fixture import Fixture
 from .models.player import Player
 from .models.table import Table
 from .models.team import Team
-from .utils import headers
+from .utils import api_request
 from .constants import LEAGUE_CODE, TEAM_ID
 
 
@@ -20,7 +20,7 @@ class Football(object):
     The Football class.
     """
 
-    API_URL = 'http://api.football-data.org/v2/'
+    API_URL = 'https://api.football-data.org/v2/'
 
     def __init__(self, api_key=None):
         """
@@ -36,24 +36,19 @@ class Football(object):
         self.api_key = api_key
         self.headers = {'X-Auth-Token': api_key}
 
-    def competitions(self, season=None):
+    def competitions(self):
         """
         Returns a list of Competition objects of all the available
         competitions.
         """
-        # Error checking for query parameter season
-        if season:
-            season = str(season)
-            pattern = re.compile(r"\d\d\d\d")
-            if not pattern.match(season):
-                raise ValueError('season is invalid.')
-            season = {"season": season}
 
-        url = self._generate_url('competitions', season)
-        competitions = requests.get(url, headers=self.headers).json()
-        competitions = [Competition(competition)
-                        for competition in competitions['competitions']]
-
+        url = self._generate_url('competitions')
+        res = api_request(url, self.headers)
+        if res:
+            competitions = [Competition(competition)
+                            for competition in res['competitions']]
+        else:
+            competitions = []
         return competitions
 
     def competition(self, competition_id, season=None):
@@ -70,10 +65,12 @@ class Football(object):
 
             raise ValueError('could not find competition.')
 
-        url = self._generate_url(f'competitions / {competition_id}')
-        competition = requests.get(url, headers=self.headers).json()
-        competition = Competition(competition)
-
+        url = self._generate_url(f'competitions/{competition_id}')
+        res = api_request(url, self.headers)
+        if res:
+            competition = Competition(res)
+        else:
+            competition = None
         return competition
 
     def teams(self, competition):
@@ -88,7 +85,7 @@ class Football(object):
             except KeyError as error:
                 return error
 
-        url = self._generate_url(f'competitions / {competition} / teams')
+        url = self._generate_url(f'competitions/{competition}/teams')
         teams = requests.get(url, headers=self.headers).json()
 
         return [Team(team) for team in teams['teams']]
@@ -113,13 +110,13 @@ class Football(object):
             matchday = {"matchday": matchday}
 
         url = self._generate_url(
-            f'competitions / {competition} / leagueTable', matchday)
+            f'competitions/{competition}/leagueTable', matchday)
         table = requests.get(url, headers=self.headers).json()
 
         return Table(table)
 
-    def competition_fixtures(self, competition, matchday=None,
-                             time_frame=None):
+    def competition_matches(self, competition, matchday=None,
+                            time_frame=None):
         """
         Returns a list of Fixture objects made from the fixtures of the given
         competition.
@@ -149,7 +146,7 @@ class Football(object):
             query_params['timeFrame'] = time_frame
 
         url = self._generate_url(
-            f'competitions / {competition} / fixtures', query_params)
+            f'competitions/{competition}/fixtures', query_params)
         fixtures = requests.get(url, headers=self.headers).json()
 
         return [Fixture(fixture) for fixture in fixtures['fixtures']]
@@ -183,7 +180,7 @@ class Football(object):
         """
         Returns a Fixture object of the fixture with the given ID.
         """
-        url = self._generate_url(f'fixtures / {fixture_id}')
+        url = self._generate_url(f'fixtures/{fixture_id}')
         fixture = requests.get(url, headers=self.headers).json()
         return Fixture(fixture['fixture'])
 

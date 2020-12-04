@@ -68,7 +68,7 @@ table = football.table('PL')
 
 ```python
 # Get the fixtures of the Premier League
-fixtures = football.competition_fixtures('PL')
+fixtures = football.competition_matches('PL')
 ```
 
 ### Get all fixtures across competitions
