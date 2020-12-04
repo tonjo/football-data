@@ -1,29 +1,18 @@
 ## football
 
-[![PyPI](https://img.shields.io/pypi/v/football.svg)](https://pypi.org/project/football/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/football.svg)
+A Python wrapper around the [football-data API](https://www.football-data.org) VERSION 2.
 
-A Python wrapper around the [football-data API](https://www.football-data.org).
+Based on amosbastian [`football`](https://github.com/amosbastian/football)
+
+It takes a different approach, simplified, no models involved, all json responses are converted into objects, thanks to `SimpleNamespace`, so even if `football-data.org` api changes, probably no changes are required in this library.
 
 ### Installing
 
-The recommended way to install `football` is with pip
-
-```bash
-pip install football
-```
-
-You can also use pip to install `football` directly from GitHub
-
-```bash
-pip install git+https://github.com/tonjo/football-data.git
-```
-
-or you can install the project in "editable" mode like so
+It's in a early stage, install it from githubmode like so
 
 ```bash
 git clone https://github.com/tonjo/football-data.git
-cd football
+cd football_data
 pip install -e .
 ```
 
@@ -31,13 +20,11 @@ pip install -e .
 
 ### WORK IN PROGRESS
 
-Currently the way to use `football` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
+Currently the way to use `football-data` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
 
 ```python
-from football import FootballData
+from football_data import FootballData
 football = FootballData('your_api_key')
-
-manchester_united = football.team('Manchester United FC')
 ```
 
 The following (sub) resources are available
@@ -45,10 +32,12 @@ The following (sub) resources are available
 ### Get all available competitions
 
 ```python
-# This year
+# All
 competitions = football.competitions()
-# Given year
-competitions = football.competitions(2015)
+# Specific one with id
+competition = football.competition(2015)
+print(competition.name)
+print(competition.area.name)
 ```
 
 ### Get all teams in the given competition
