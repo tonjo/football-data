@@ -1,6 +1,8 @@
+### WORK IN PROGRESS
+
 # Resources
 
-Taken from []
+Taken from [official docs](https://www.football-data.org/documentation/api)
 
 ## Competitions
 

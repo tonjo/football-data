@@ -1,4 +1,6 @@
-## football
+### WORK IN PROGRESS
+
+## football_data
 
 A Python wrapper around the [football-data API](https://www.football-data.org) **VERSION 2**
 
@@ -17,8 +19,6 @@ pip install -e .
 ```
 
 ### Usage
-
-### WORK IN PROGRESS
 
 Currently the way to use `football-data` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
 
