@@ -141,7 +141,7 @@ class Football(object):
             f'competitions/{competition}/matches', query_params)
         matches = requests.get(url, headers=self.headers).json()
 
-        return [Match(fixture) for fixture in matches['matches']]
+        return [Match(match) for match in matches['matches']]
 
     def matches(self, time_frame=None, league_code=None):
         """
@@ -166,15 +166,15 @@ class Football(object):
         url = self._generate_url('matches', query_params)
         matches = requests.get(url, headers=self.headers).json()
 
-        return [Match(fixture) for fixture in matches['matches']]
+        return [Match(match) for match in matches['matches']]
 
-    def fixture(self, fixture_id):
+    def match(self, match_id):
         """
-        Returns a Match object of the fixture with the given ID.
+        Returns a Match object of the match with the given ID.
         """
-        url = self._generate_url(f'matches/{fixture_id}')
-        fixture = requests.get(url, headers=self.headers).json()
-        return Match(fixture['fixture'])
+        url = self._generate_url(f'matches/{match_id}')
+        match = requests.get(url, headers=self.headers).json()
+        return Match(match['match'])
 
     def team_matches(self, team, season=None, time_frame=None, venue=None):
         """
@@ -214,7 +214,7 @@ class Football(object):
         url = self._generate_url(f'teams / {team} / matches', query_params)
         matches = requests.get(url, headers=self.headers).json()
 
-        return [Match(fixture) for fixture in matches['matches']]
+        return [Match(match) for match in matches['matches']]
 
     def team(self, team):
         """

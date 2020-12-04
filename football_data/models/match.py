@@ -26,4 +26,4 @@ class Match():
 
     def __str__(self):
         # TODO verify full time / extra time
-        return f"{self.home_team['name']} - {self.away_team['name']}  {self.score['fullTime']['home_team']} - {self.score['fullTime']['away_team']}"
+        return f"{self.home_team['name']} - {self.away_team['name']}  {self.score['fullTime']['homeTeam']} - {self.score['fullTime']['awayTeam']}"
