@@ -1,1 +1,1 @@
-from .football import FootballData
+from .football_data import FootballData

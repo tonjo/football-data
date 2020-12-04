@@ -6,11 +6,6 @@ import re
 import requests
 import urllib.parse
 
-from .models.competition import Competition
-from .models.match import Match
-from .models.player import Player
-from .models.table import Table
-from .models.team import Team
 from .constants import LEAGUE_CODE, TEAM_ID
 from .utils import json2obj
 
@@ -62,12 +57,12 @@ class FootballData(object):
         Returns a specific competition by its competition_id.
         """
 
-        url = f'competitions/{competition_id}'
+        url = self._generate_url(f'competitions/{competition_id}')
         res = self._api_request(url)
 
         if res:
             json_tmp = json2obj(res)
-            return json_tmp.competition
+            competition = json_tmp
         else:
             competition = None
         return competition
