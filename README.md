@@ -6,11 +6,11 @@ A Python wrapper around the [football-data API](https://www.football-data.org) *
 
 Based on amosbastian [`football`](https://github.com/amosbastian/football)
 
-It takes a different approach, simplified, no models involved, all json responses are converted into objects, thanks to `SimpleNamespace`, so even if `football-data.org` api changes, probably no changes are required in this library.
+It takes a different approach, simplified, _schema-less_ (no models involved), all json responses are converted into objects, thanks to `SimpleNamespace`, so even if `football-data.org` API changes, hopefully no changes are required in this package (endpoints excluded).
 
 ## Install
 
-It's in a early stage, install it from github like so
+It's in a early stage, install it from github:
 
 ```bash
 git clone https://github.com/tonjo/football-data.git
@@ -63,6 +63,7 @@ matches = football.competition_matches('CL')
 
 # Filter for a particular status
 matches = football.competition_matches('CL', status='FINISHED')
+
 ```
 
 ### Available arguments (filters):
@@ -89,6 +90,10 @@ matches = football.matches(competitions='PL')
 
 # Specific time frame matches, premier league and Champions League
 matches = football.matches(competitions='PL,CL', dateFrom='2020-03-03', dateTo='2020-03-04')
+
+
+# Single match
+match = football.match(200063)
 ```
 
 ### Available arguments (filters):
