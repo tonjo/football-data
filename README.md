@@ -46,41 +46,12 @@ print(competition.area.name)
 
 Please read [CONTRIBUTING.md](https://github.com/tonjo/football-data/blob/master/CONTRIBUTING.md) for details on how to contribute to `football` and what the best way to go about this is!
 
-## Roadmap
-
-- ~~Create classes for each (sub) resource~~
-- Add helper functions
-- Improve the use of filters
-- Add utilities for team/league/competition codes, names etc.
-- Create proper documentation
-- Include a CLI
-
 ## Authors
 
 - **Amos Bastian** - _Initial work_ - [@amosbastian](https://github.com/amosbastian)
+- **Antonio Mignolli** - _V2 port and rewrite_ - [@tonjo](https://github.com/tonjo)
 
-See also the list of [contributors](https://github.com/amosbastian/football/graphs/contributors) who participated in this project.
-
-## Changelog
-
-#### 0.1.1 - 2018-05-14
-
-##### Added
-
-- Initial release - contains functions for each (sub) resource of the football-data API, including filtering
-
-#### 0.2.0 - 2018-06-10
-
-##### Updated
-
-- All sub resources are now classes including functions to call retrieve additional information
-- Team related functions can now use the name, shortname or code of the team instead of just its ID
-- FootballData functions use classes instead
-- Unit tests for each function changed to test respective classes
-
-##### Added
-
-- Helper functions for Table and Team classes
+See also the list of [contributors](https://github.com/tonjo/football-data/graphs/contributors) who participated in this project.
 
 ## License
 
