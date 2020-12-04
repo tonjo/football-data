@@ -11,8 +11,15 @@ from .models.match import Match
 from .models.player import Player
 from .models.table import Table
 from .models.team import Team
-from .utils import api_request
 from .constants import LEAGUE_CODE, TEAM_ID
+from .utils import json2obj
+
+import logging
+logging.basicConfig(
+    format="%(asctime)s: %(levelname)s: %(name)s: %(message)s")
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 
 class Football(object):
@@ -43,7 +50,7 @@ class Football(object):
         """
 
         url = self._generate_url('competitions')
-        res = api_request(url, self.headers)
+        res = self._api_request(url)
         if res:
             competitions = [Competition(competition)
                             for competition in res['competitions']]
@@ -66,7 +73,7 @@ class Football(object):
             raise ValueError('could not find competition.')
 
         url = self._generate_url(f'competitions/{competition_id}')
-        res = api_request(url, self.headers)
+        res = self._api_request(url)
         if res:
             competition = Competition(res)
         else:
@@ -86,9 +93,10 @@ class Football(object):
                 return error
 
         url = self._generate_url(f'competitions/{competition}/teams')
-        teams = requests.get(url, headers=self.headers).json()
-
-        return [Team(team) for team in teams['teams']]
+        res = requests.get(url, headers=self.headers)  # .json()
+        json_tmp = json2obj(res.content)
+        return json_tmp.teams
+        # return [Team(team) for team in teams['teams']]
 
     def table(self, competition, matchday=None):
         """
@@ -139,9 +147,18 @@ class Football(object):
 
         url = self._generate_url(
             f'competitions/{competition}/matches', query_params)
-        matches = requests.get(url, headers=self.headers).json()
 
-        return [Match(match) for match in matches['matches']]
+        # res = requests.get(url, headers=self.headers)  # .json()
+        res = self._api_request(url, False)
+        json_tmp = json2obj(res)
+        return json_tmp.matches
+
+        res = self._api_request(url)
+        if res:
+            matches = [Match(match) for match in res['matches']]
+        else:
+            matches = []
+        return matches
 
     def matches(self, time_frame=None, league_code=None):
         """
@@ -166,7 +183,7 @@ class Football(object):
         url = self._generate_url('matches', query_params)
         matches = requests.get(url, headers=self.headers).json()
 
-        return [Match(match) for match in matches['matches']]
+        return [Match(match) for match in res['matches']]
 
     def match(self, match_id):
         """
@@ -253,13 +270,28 @@ class Football(object):
         Generates a URL for the given action, with optional query parameters
         that can be used to filter the response.
         """
-        if action == "competitions" or action == "matches":
-            action += "/"
+        # if action == "competitions" or action == "matches":
+        # action += "/"
 
         if query_params:
             query_params = urllib.parse.urlencode(query_params)
-            action = f'{action}?{query_params}'
+            action = f'{action}/?{query_params}'
 
         url = urllib.parse.urljoin(self.API_URL, action)
 
         return url
+
+    def _api_request(self, url, json_format=True):
+        try:
+            res_raw = requests.get(url, headers=self.headers)
+            res = res_raw.json()
+            if 'errorCode' in res or 'error' in res:
+                msg = res['message']
+                logger.error(msg)
+                return False
+            else:
+                return res if json_format else res_raw.content
+        except:
+            msg = 'requests.get error'
+            logger.error(msg)
+            return False
