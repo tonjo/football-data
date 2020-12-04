@@ -7,7 +7,7 @@ import requests
 import urllib.parse
 
 from .models.competition import Competition
-from .models.fixture import Fixture
+from .models.match import Match
 from .models.player import Player
 from .models.table import Table
 from .models.team import Team
@@ -115,10 +115,9 @@ class Football(object):
 
         return Table(table)
 
-    def competition_matches(self, competition, matchday=None,
-                            time_frame=None):
+    def competition_matches(self, competition, time_frame=None):
         """
-        Returns a list of Fixture objects made from the fixtures of the given
+        Returns a list of Match objects made from the matches of the given
         competition.
         """
         # Allow users to use both id or name
@@ -129,13 +128,6 @@ class Football(object):
                 return error
 
         query_params = {}
-        # Error checking for query parameter matchday
-        if matchday:
-            matchday = str(matchday)
-            pattern = re.compile(r"\d +")
-            if not pattern.match(matchday):
-                raise ValueError('matchday is invalid.')
-            query_params['matchday'] = matchday
 
         # Error checking for query parameter time_frame
         if time_frame:
@@ -146,14 +138,14 @@ class Football(object):
             query_params['timeFrame'] = time_frame
 
         url = self._generate_url(
-            f'competitions/{competition}/fixtures', query_params)
-        fixtures = requests.get(url, headers=self.headers).json()
+            f'competitions/{competition}/matches', query_params)
+        matches = requests.get(url, headers=self.headers).json()
 
-        return [Fixture(fixture) for fixture in fixtures['fixtures']]
+        return [Match(fixture) for fixture in matches['matches']]
 
-    def fixtures(self, time_frame=None, league_code=None):
+    def matches(self, time_frame=None, league_code=None):
         """
-        Returns a list of Fixture objects made from the fixtures across either
+        Returns a list of Match objects made from the matches across either
         all competitions or a specific league.
         """
         query_params = {}
@@ -171,22 +163,22 @@ class Football(object):
                 raise ValueError('league_code is invalid.')
             query_params['league'] = league_code
 
-        url = self._generate_url('fixtures', query_params)
-        fixtures = requests.get(url, headers=self.headers).json()
+        url = self._generate_url('matches', query_params)
+        matches = requests.get(url, headers=self.headers).json()
 
-        return [Fixture(fixture) for fixture in fixtures['fixtures']]
+        return [Match(fixture) for fixture in matches['matches']]
 
     def fixture(self, fixture_id):
         """
-        Returns a Fixture object of the fixture with the given ID.
+        Returns a Match object of the fixture with the given ID.
         """
-        url = self._generate_url(f'fixtures/{fixture_id}')
+        url = self._generate_url(f'matches/{fixture_id}')
         fixture = requests.get(url, headers=self.headers).json()
-        return Fixture(fixture['fixture'])
+        return Match(fixture['fixture'])
 
-    def team_fixtures(self, team, season=None, time_frame=None, venue=None):
+    def team_matches(self, team, season=None, time_frame=None, venue=None):
         """
-        Returns a list of Fixture objects made from the fixtures of the team
+        Returns a list of Match objects made from the matches of the team
         with the given ID, in a certain season, time frame or venue.
         """
         # If string try to convert to ID
@@ -219,10 +211,10 @@ class Football(object):
                 raise ValueError('venue is invalid.')
             query_params['venue'] = venue
 
-        url = self._generate_url(f'teams / {team} / fixtures', query_params)
-        fixtures = requests.get(url, headers=self.headers).json()
+        url = self._generate_url(f'teams / {team} / matches', query_params)
+        matches = requests.get(url, headers=self.headers).json()
 
-        return [Fixture(fixture) for fixture in fixtures['fixtures']]
+        return [Match(fixture) for fixture in matches['matches']]
 
     def team(self, team):
         """
@@ -261,7 +253,7 @@ class Football(object):
         Generates a URL for the given action, with optional query parameters
         that can be used to filter the response.
         """
-        if action == "competitions" or action == "fixtures":
+        if action == "competitions" or action == "matches":
             action += "/"
 
         if query_params:

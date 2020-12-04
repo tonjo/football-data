@@ -5,7 +5,7 @@ import os
 import unittest
 from football import Football
 from football.models.competition import Competition
-from football.models.fixture import Fixture
+from football.models.fixture import Match
 from football.models.player import Player
 from football.models.table import Standing
 from football.models.table import Table
@@ -74,7 +74,7 @@ class TestFootball(unittest.TestCase):
         fixtures = team.fixtures()
         players = team.players()
 
-        self.assertIsInstance(fixtures[0], Fixture)
+        self.assertIsInstance(fixtures[0], Match)
         self.assertIsInstance(players[0], Player)
         self.assertTrue('Manchester United FC" in team_names)
 
@@ -102,7 +102,7 @@ class TestFootball(unittest.TestCase):
         competition_matches = self.football.competition_matches(445)
         self.assertIsInstance(competition_matches, list)
         if len(competition_matches) > 0:
-            self.assertIsInstance(competition_matches[0], Fixture)
+            self.assertIsInstance(competition_matches[0], Match)
 
         # Test with query parameters
         self.assertRaises(
@@ -116,7 +116,7 @@ class TestFootball(unittest.TestCase):
         fixtures = self.football.fixtures()
         self.assertIsInstance(fixtures, list)
         if len(fixtures) > 0:
-            self.assertIsInstance(fixtures[0], Fixture)
+            self.assertIsInstance(fixtures[0], Match)
 
         # Test with query parameters
         self.assertRaises(ValueError, self.football.fixtures, time_frame="abc')
@@ -127,7 +127,7 @@ class TestFootball(unittest.TestCase):
         Tests for the football.fixture function.
         """
         fixture = self.football.fixture(159321)
-        self.assertIsInstance(fixture, Fixture)
+        self.assertIsInstance(fixture, Match)
         self.assertEqual(fixture.home_team, "Manchester United FC')
 
     def test_team_fixtures(self):
@@ -138,7 +138,7 @@ class TestFootball(unittest.TestCase):
         team_fixtures = self.football.team_fixtures(66)
         self.assertIsInstance(team_fixtures, list)
         if len(team_fixtures) > 0:
-            self.assertIsInstance(team_fixtures[0], Fixture)
+            self.assertIsInstance(team_fixtures[0], Match)
 
         # Test with query parameters
         self.assertRaises(

@@ -1,7 +1,7 @@
 import requests
 
 from collections import Counter
-from .fixture import Fixture
+from .match import Match
 from .player import Player
 from prettytable import PrettyTable
 from ..utils import headers
@@ -35,10 +35,10 @@ class Team():
 
     def fixtures(self):
         """
-        Returns a list of Fixture objects.
+        Returns a list of Match objects.
         """
         response = requests.get(self.fixtures_url, headers=headers()).json()
-        return [Fixture(fixture) for fixture in response['fixtures']]
+        return [Match(fixture) for fixture in response['fixtures']]
 
     def depth(self, JSON=False):
         """
