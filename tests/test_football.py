@@ -6,11 +6,11 @@ import unittest
 from football_data import FootballData
 
 
-class TestFootball(unittest.TestCase):
+class FootballDataTest(unittest.TestCase):
     """
     Class for unit testing football.py.
     """
-    football = FootballData(os.environ.get('FOOTBALL_API_KEY'))
+    football = FootballData(os.environ.get('FOOTBALL_DATA_API_KEY'))
 
     def test_competitions(self):
         """
@@ -18,6 +18,9 @@ class TestFootball(unittest.TestCase):
         """
         # General tests
         competitions = self.football.competitions()
+        self.assertIsInstance(competitions, list)
+        if not isinstance(competitions, list):
+            return False
         competition = competitions[0]
         self.assertEqual(competition.id, 2006)
         self.assertEqual(competition.name, 'WC Qualification')
@@ -57,11 +60,37 @@ class TestFootball(unittest.TestCase):
         """
         Tests for the football.competition_matches function.
         """
-        competition_matches = self.football.competition_matches(2019)
-        self.assertIsInstance(competition_matches, list)
-        self.assertTrue(len(competition_matches) == 380)
+        matches = self.football.competition_matches(2019)
+        self.assertIsInstance(matches, list)
+        self.assertTrue(len(matches) == 380)
+        matches = self.football.competition_matches('WC')
+        self.assertTrue(len(matches) == 64)
 
-        # Test with query parameters
+        # TODO Test with ALL query parameters
+        matches = self.football.competition_matches(
+            'WC', dateFrom='2018-07-08', dateTo='2018-07-15')
+        self.assertTrue(len(matches) == 4)
+
+        # Only one dateFrom/dateTo, not both
+        matches = self.football.competition_matches(
+            'WC', dateFrom='2018-07-08')
+        self.assertTrue(matches == [])
+
+        matches = self.football.competition_matches(
+            'WC', dateTo='2018-07-08')
+        self.assertTrue(matches == [])
+
+        # Invalid dateFrom format
+        matches = self.football.competition_matches(
+            'WC', dateFrom='201-0-0', dateTo='2020-01-01')
+        self.assertTrue(matches == [])
+
+        # Season, stage, group
+        matches = self.football.competition_matches(
+            'CL', season=2019, stage='PRELIMINARY_SEMI_FINALS', group='Preliminary Semi-finals')
+        self.assertIsInstance(matches, list)
+        self.assertTrue(matches[0].id == 266391)
+
 
 #     def test_matches(self):
 #         """
@@ -151,17 +180,17 @@ class TestFootball(unittest.TestCase):
 #         self.assertEqual(players[0].name, shortname_players[0].name)
 #         self.assertEqual(players[0].name, name_players[0].name)
 
-#     def test__generate_url(self):
+#     def test__build_url(self):
 #         """
-#         Tests for the football._generate_url function.
+#         Tests for the football._build_url function.
 #         """
 #         # General tests
-#         url = self.football._generate_url("competitions")
+#         url = self.football._build_url("competitions")
 #         self.assertEqual(url, "http://api.football-data.org/v1/competitions/")
-#         url = self.football._generate_url("competitions", {"season": 2015})
+#         url = self.football._build_url("competitions", {"season": 2015})
 #         self.assertEqual(
 #             url, "http://api.football-data.org/v1/competitions/?season=2015")
-#         url = self.football._generate_url(
+#         url = self.football._build_url(
 #             "competitions/445/matches", {"matchday": 1, "timeFrame": "n14"})
 #         self.assertEqual(url, ("http://api.football-data.org/v1/competitions/"
 #                                "445/matches?matchday=1&timeFrame=n14"))

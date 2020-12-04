@@ -20,7 +20,7 @@ pip install -e .
 
 ### Usage
 
-Currently the way to use `football-data` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
+Currently the way to use `football-data` is to instantiate a `FootballData` class using your API key by either passing it directly or setting the environment variable `FOOTBALL_DATA_API_KEY`, which can be requested [here](https://www.football-data.org/client/register)
 
 ```python
 from football_data import FootballData
