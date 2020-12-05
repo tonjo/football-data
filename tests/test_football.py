@@ -48,7 +48,6 @@ class FootballDataTest(unittest.TestCase):
         """
         Tests for the football.competition_teams function.
         """
-        # General tests
         competition_teams = self.football.competition_teams(2019)
         teams_short_names = [team.shortName for team in competition_teams]
         self.assertTrue('Verona' in teams_short_names)
@@ -91,20 +90,19 @@ class FootballDataTest(unittest.TestCase):
         self.assertIsInstance(matches, list)
         self.assertTrue(matches[0].id == 266391)
 
+    def test_matches(self):
+        """
+        Tests for the football.matches function.
+        """
+        # General tests
+        matches = self.football.matches('SA')
+        self.assertIsInstance(matches, list)
+        if len(matches) > 0:
+            self.assertEqual(matches[0].homeTeam.name, 'Spezia Calcio')
 
-#     def test_matches(self):
-#         """
-#         Tests for the football.matches function.
-#         """
-#         # General tests
-#         matches = self.football.matches()
-#         self.assertIsInstance(matches, list)
-#         if len(matches) > 0:
-#             self.assertIsInstance(matches[0], Fixture)
-
-#         # Test with query parameters
-#         self.assertRaises(ValueError, self.football.matches, time_frame="abc")
-#         self.assertRaises(ValueError, self.football.matches, league_code=123)
+        # Test with query parameters
+        # self.assertRaises(ValueError, self.football.matches, time_frame="abc")
+        # self.assertRaises(ValueError, self.football.matches, league_code=123)
 
 #     def test_fixture(self):
 #         """

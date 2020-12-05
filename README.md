@@ -75,6 +75,24 @@ matches = football.competition_matches('CL', status='FINISHED')
 - group
 - season
 
+## Competition teams
+
+List all teams for a particular competition.
+
+```python
+teams = football.competition_teams(2019)
+# OR
+teams = football.competition_teams('SA')
+for team in teams:
+  print(team.name)
+
+```
+
+### Available arguments (filters):
+
+- season
+- stage
+
 ## Matches
 
 List matches across (a set of) competitions.
