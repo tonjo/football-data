@@ -120,7 +120,13 @@ match = football.match(200063)
 - dateTo
 - status
 
-# MORE coming
+# TODO
+
+- Standings
+- Scorers
+- Areas
+- Players
+- Player matches
 
 ## Contributing
 

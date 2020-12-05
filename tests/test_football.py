@@ -119,79 +119,37 @@ class FootballDataTest(unittest.TestCase):
         self.assertEqual(match.venue, 'Stadiumi Fadil Vokrri')
         self.assertEqual(match.score.winner, 'AWAY_TEAM')
 
-#     def test_fixture(self):
-#         """
-#         Tests for the football.fixture function.
-#         """
-#         fixture = self.football.fixture(159321)
-#         self.assertIsInstance(fixture, Fixture)
-#         self.assertEqual(fixture.home_team, "Manchester United FC")
+    def test_team(self):
+        """
+        Tests for the football.team function.
+        """
+        # General tests
+        team = self.football.team(450)
+        self.assertEqual(team.name, 'Hellas Verona FC')
+        self.assertEqual(team.founded, 1903)
 
-#     def test_team_matches(self):
-#         """
-#         Tests for the football.team_matches function.
-#         """
-#         # General tests
-#         team_matches = self.football.team_matches(66)
-#         self.assertIsInstance(team_matches, list)
-#         if len(team_matches) > 0:
-#             self.assertIsInstance(team_matches[0], Fixture)
+    def test_team_matches(self):
+        """
+        Tests for the football.team_matches function.
+        """
+        # General tests
+        team_matches = self.football.team_matches(450)
+        self.assertIsInstance(team_matches, list)
+        if len(team_matches) > 0:
+            self.assertEqual(team_matches[0].id, 309596)
 
-#         # Test with query parameters
-#         self.assertRaises(
-#             ValueError, self.football.team_matches, 66, time_frame="abc")
-#         self.assertRaises(
-#             ValueError, self.football.team_matches, 66, season="abc")
-#         self.assertRaises(
-#             ValueError, self.football.team_matches, 66, venue="abc")
+        team_matches = self.football.team_matches(450, venue='AWAY')
+        self.assertEqual(len(team_matches), 19)
+        team_matches = self.football.team_matches(450, limit=5)
+        self.assertEqual(len(team_matches), 5)
 
-#         # Test with team name, shortname and code
-#         code_matches = self.football.team_matches("MUFC")
-#         shortname_matches = self.football.team_matches("ManU")
-#         name_matches = self.football.team_matches("Manchester United FC")
+        # Test invalid filters
+        team_matches = self.football.team_matches(450, venue='INVALID')
+        self.assertEqual(len(team_matches), 0)
+        team_matches = self.football.team_matches(450, limit='a')
+        self.assertEqual(len(team_matches), 0)
 
-#         self.assertEqual(team_matches[0].winner, code_matches[0].winner)
-#         self.assertEqual(team_matches[0].winner, shortname_matches[0].winner)
-#         self.assertEqual(team_matches[0].winner, name_matches[0].winner)
-
-#     def test_team(self):
-#         """
-#         Tests for the football.team function.
-#         """
-#         # General tests
-#         team = self.football.team(66)
-#         self.assertIsInstance(team, Team)
-#         self.assertEqual(team.name, "Manchester United FC")
-#         self.assertEqual(team.code, "MUFC")
-#         self.assertEqual(team.shortname, "ManU")
-
-#         # Test with team name, shortname and code
-#         code_team = self.football.team("MUFC")
-#         shortname_team = self.football.team("ManU")
-#         name_team = self.football.team("Manchester United FC")
-
-#         self.assertEqual(team.name, code_team.name)
-#         self.assertEqual(team.name, shortname_team.name)
-#         self.assertEqual(team.name, name_team.name)
-
-#     def test_players(self):
-#         """
-#         Tests for the football.players function.
-#         """
-#         # General tests
-#         players = self.football.players(66)
-#         self.assertIsInstance(players, list)
-#         player_names = [player.name for player in players]
-#         self.assertIn("Eric Bailly", player_names)
-
-#         # Test with team name, shortname and code
-#         code_players = self.football.players("MUFC")
-#         shortname_players = self.football.players("ManU")
-#         name_players = self.football.players("Manchester United FC")
-
-#         self.assertEqual(players[0].name, code_players[0].name)
-#         self.assertEqual(players[0].name, shortname_players[0].name)
-#         self.assertEqual(players[0].name, name_players[0].name)
+        # TODO test status and dateFrom/dateTo
 
     def test__build_url(self):
         """

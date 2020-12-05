@@ -40,7 +40,7 @@ class FootballData(object):
 
     def competitions(self):
         """
-        Returns a list of all the available competitions.
+        List all available competitions.
         """
 
         url = self._build_url('competitions')
@@ -54,7 +54,7 @@ class FootballData(object):
 
     def competition(self, competition):
         """
-        Returns a specific competition by its competition.
+        List one particular competition.
         """
 
         url = self._build_url(f'competitions/{competition}')
@@ -69,8 +69,7 @@ class FootballData(object):
 
     def competition_teams(self, competition, season=None, stage=None):
         """
-        Returns a list of Team objects of teams that are playing in the given
-        competition.
+        List all teams for a particular competition.
         """
 
         # competition could be an id or a code like 'WC'
@@ -93,8 +92,7 @@ class FootballData(object):
 
     def competition_matches(self, competition, dateFrom=None, dateTo=None, stage=None, status=None, matchday=None, group=None, season=None):
         """
-        Returns a list of Match objects made from the matches of the given
-        competition.
+        List all matches for a particular competition.
         """
 
         query_params = {}
@@ -133,7 +131,7 @@ class FootballData(object):
 
     def matches(self, competitions=None, dateFrom=None, dateTo=None, status=None):
         """
-        Returns a list of Match objects made from the matches across a set of competitions.
+        List matches across (a set of) competitions.
         """
         query_params = {}
         # Error checking for query parameter dateFrom
@@ -164,7 +162,7 @@ class FootballData(object):
 
     def match(self, match_id):
         """
-        Returns a Match object of the match with the given ID.
+        Show one particular match.
         """
         url = self._build_url(f'matches/{match_id}')
         res = self._api_request(url)
@@ -174,60 +172,58 @@ class FootballData(object):
         else:
             return []
 
-    # def team_matches(self, team, season=None, dateFrom=None, venue=None):
-    #     """
-    #     Returns a list of Match objects made from the matches of the team
-    #     with the given ID, in a certain season, time frame or venue.
-    #     """
-    #     # If string try to convert to ID
-    #     if isinstance(team, str):
-    #         if team.lower() in TEAM_ID.keys():
-    #             team = TEAM_ID[team.lower()]
-    #         else:
-    #             raise ValueError(f'{team} is not a valid team or ID!')
+    def team_matches(self, team_id, dateFrom=None, dateTo=None, status=None, venue=None, limit=None):
+        """
+        Show all matches for a particular team.
+        """
 
-    #     query_params = {}
-    #     # Error checking for query parameter season
-    #     if season:
-    #         season = str(season)
-    #         pattern = re.compile(r"\d\d\d\d")
-    #         if not pattern.match(season):
-    #             raise ValueError('season is invalid.')
-    #         query_params['season'] = season
+        query_params = {}
 
-    #     # Error checking for query parameter dateFrom
-    #     if dateFrom:
-    #         dateFrom = str(dateFrom)
-    #         pattern = re.compile(r"p | n[1 - 9]{1, 2}")
-    #         if not pattern.match(dateFrom):
-    #             raise ValueError('dateFrom is invalid.')
-    #         query_params['timeFrame'] = dateFrom
+        # Error checking for query parameter dateFrom
+        if dateFrom and dateTo:
+            if not validate_date(dateFrom) or not validate_date(dateTo):
+                logger.error(f'team_matches: invalid dateFrom/dateTo')
+                return []
+            query_params['dateFrom'] = dateFrom
+            query_params['dateTo'] = dateTo
+        elif dateFrom or dateTo:
+            logger.error(
+                'team_matches specify both dateFrom and dateTo or none')
+            return []
 
-    #     # Error checking for query parameter venue
-    #     if venue:
-    #         if venue not in ('home', 'away'):
-    #             raise ValueError('venue is invalid.')
-    #         query_params['venue'] = venue
+        # Error checking for query parameter venue
+        if venue:
+            if venue not in ('HOME', 'AWAY'):
+                logger.error('venue is invalid.')
+                return []
+            query_params['venue'] = venue
+        if limit:
+            if isinstance(limit, int):
+                query_params['limit'] = limit
+            else:
+                logger.error('limit is invalid.')
+                return []
 
-    #     url = self._build_url(f'teams / {team} / matches', query_params)
-    #     matches = requests.get(url, headers=self.headers).json()
+        url = self._build_url(f'teams/{team_id}/matches', query_params)
+        res = self._api_request(url)
+        if res:
+            json_tmp = json2obj(res)
+            return json_tmp.matches
+        else:
+            return []
 
-    #     return [Match(match) for match in matches['matches']]
+    def team(self, team_id):
+        """
+        Show one particular team.
+        """
 
-    # def team(self, team):
-    #     """
-    #     Returns a Team object made from the given team.
-    #     """
-    #     # If string try to convert to ID
-    #     if isinstance(team, str):
-    #         if team.lower() in TEAM_ID.keys():
-    #             team = TEAM_ID[team.lower()]
-    #         else:
-    #             raise ValueError(f'{team} is not a valid team or ID!')
-
-    #     url = self._build_url(f'teams / {team}')
-    #     team = requests.get(url, headers=self.headers).json()
-    #     return Team(team)
+        url = self._build_url(f'teams/{team_id}')
+        res = self._api_request(url)
+        if res:
+            json_tmp = json2obj(res)
+            return json_tmp
+        else:
+            return None
 
     # def players(self, team):
     #     """
