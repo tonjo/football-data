@@ -120,6 +120,26 @@ match = football.match(200063)
 - dateTo
 - status
 
+## Team
+
+Show one particular team.
+
+```python
+team = self.football.team(450)
+
+```
+
+## Team Matches
+
+Show all matches for a particular team.
+
+```python
+matches = self.football.matches('SA')
+print(f'found {len(matches)} matches for competition "SA"')
+```
+
+---
+
 # TODO
 
 - Standings
@@ -130,7 +150,7 @@ match = football.match(200063)
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/tonjo/football-data/blob/master/CONTRIBUTING.md) for details on how to contribute to `football` and what the best way to go about this is!
+Please read [CONTRIBUTING.md](https://github.com/tonjo/football-data/blob/master/CONTRIBUTING.md) for details on how to contribute to `football-data` and what the best way to go about this is!
 
 ## Authors
 

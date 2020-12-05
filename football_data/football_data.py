@@ -225,23 +225,6 @@ class FootballData(object):
         else:
             return None
 
-    # def players(self, team):
-    #     """
-    #     Returns a list of Player objects made from players playing for the team
-    #     with the given ID.
-    #     """
-    #     # If string try to convert to ID
-    #     if isinstance(team, str):
-    #         if team.lower() in TEAM_ID.keys():
-    #             team = TEAM_ID[team.lower()]
-    #         else:
-    #             raise ValueError(f'{team} is not a valid team or ID!')
-
-    #     url = self._build_url(f'teams / {team} / players')
-    #     players = requests.get(url, headers=self.headers).json()
-
-    #     return [Player(player, team) for player in players['players']]
-
     def _build_url(self, action, query_params=None):
         """
         Generates a URL for the given action, with optional query parameters
