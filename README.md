@@ -138,8 +138,6 @@ matches = self.football.matches('SA')
 print(f'found {len(matches)} matches for competition "SA"')
 ```
 
----
-
 # TODO
 
 - Standings
@@ -147,6 +145,21 @@ print(f'found {len(matches)} matches for competition "SA"')
 - Areas
 - Players
 - Player matches
+
+---
+
+# Football-Api official resources list
+
+Please consult official docs:
+
+- [Quick start](https://www.football-data.org/documentation/quickstart)
+- [API Reference](https://www.football-data.org/documentation/api)
+
+### Match statuses
+
+From [https://www.football-data.org/assets/v2_status_diagram.png](https://www.football-data.org/assets/v2_status_diagram.png)
+
+![Match statuses](https://www.football-data.org/assets/v2_status_diagram.png)
 
 ## Contributing
 
