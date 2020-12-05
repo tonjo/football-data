@@ -67,24 +67,28 @@ class FootballData(object):
             competition = None
         return competition
 
-    def competition_teams(self, competition=None):
+    def competition_teams(self, competition, season=None, stage=None):
         """
         Returns a list of Team objects of teams that are playing in the given
         competition.
         """
-        # competition could be an id or a code like 'WC'
 
-        if competition:
-            url = self._build_url(f'competitions/{competition}/teams')
-            res = self._api_request(url)
-            if res:
-                json_tmp = json2obj(res)
-                return json_tmp.teams
-            else:
-                logger.error(f'teams: no data found')
-                return None
+        # competition could be an id or a code like 'WC'
+        query_params = {}
+
+        if season:
+            query_params['season'] = season
+        if stage:
+            query_params['stage'] = stage
+
+        url = self._build_url(
+            f'competitions/{competition}/teams', query_params)
+        res = self._api_request(url)
+        if res:
+            json_tmp = json2obj(res)
+            return json_tmp.teams
         else:
-            logger.error(f'teams: specify competition')
+            logger.error(f'teams: no data found')
             return None
 
     def competition_matches(self, competition, dateFrom=None, dateTo=None, stage=None, status=None, matchday=None, group=None, season=None):

@@ -54,6 +54,17 @@ class FootballDataTest(unittest.TestCase):
         competition_teams = self.football.competition_teams('WC')
         teams_short_names = [team.shortName for team in competition_teams]
         self.assertTrue('France' in teams_short_names)
+        # TODO Test with query parameters
+        competition_teams = self.football.competition_teams('CL', season=2020)
+        teams_short_names = [team.shortName for team in competition_teams]
+        self.assertTrue('Celje' in teams_short_names)
+        competition_teams = self.football.competition_teams('CL', season=2018)
+        teams_short_names = [team.shortName for team in competition_teams]
+        self.assertFalse('Celje' in teams_short_names)
+        competition_teams = self.football.competition_teams(
+            'CL', season=2018, stage='FINAL')
+        teams_short_names = [team.shortName for team in competition_teams]
+        self.assertTrue(['Liverpool', 'Tottenham'] == teams_short_names)
 
     def test_competition_matches(self):
         """
@@ -65,7 +76,6 @@ class FootballDataTest(unittest.TestCase):
         matches = self.football.competition_matches('WC')
         self.assertTrue(len(matches) == 64)
 
-        # TODO Test with ALL query parameters
         matches = self.football.competition_matches(
             'WC', dateFrom='2018-07-08', dateTo='2018-07-15')
         self.assertTrue(len(matches) == 4)
@@ -100,7 +110,7 @@ class FootballDataTest(unittest.TestCase):
         if len(matches) > 0:
             self.assertEqual(matches[0].homeTeam.name, 'Spezia Calcio')
 
-        # Test with query parameters
+        # TODO Test with query parameters
         # self.assertRaises(ValueError, self.football.matches, time_frame="abc")
         # self.assertRaises(ValueError, self.football.matches, league_code=123)
 
