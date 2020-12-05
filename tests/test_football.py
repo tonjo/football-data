@@ -110,9 +110,14 @@ class FootballDataTest(unittest.TestCase):
         if len(matches) > 0:
             self.assertEqual(matches[0].homeTeam.name, 'Spezia Calcio')
 
-        # TODO Test with query parameters
-        # self.assertRaises(ValueError, self.football.matches, time_frame="abc")
-        # self.assertRaises(ValueError, self.football.matches, league_code=123)
+    def test_match(self):
+        """
+        Tests for the football.matches function.
+        """
+        # General tests
+        match = self.football.match(266391)
+        self.assertEqual(match.venue, 'Stadiumi Fadil Vokrri')
+        self.assertEqual(match.score.winner, 'AWAY_TEAM')
 
 #     def test_fixture(self):
 #         """
@@ -188,20 +193,20 @@ class FootballDataTest(unittest.TestCase):
 #         self.assertEqual(players[0].name, shortname_players[0].name)
 #         self.assertEqual(players[0].name, name_players[0].name)
 
-#     def test__build_url(self):
-#         """
-#         Tests for the football._build_url function.
-#         """
-#         # General tests
-#         url = self.football._build_url("competitions")
-#         self.assertEqual(url, "http://api.football-data.org/v1/competitions/")
-#         url = self.football._build_url("competitions", {"season": 2015})
-#         self.assertEqual(
-#             url, "http://api.football-data.org/v1/competitions/?season=2015")
-#         url = self.football._build_url(
-#             "competitions/445/matches", {"matchday": 1, "timeFrame": "n14"})
-#         self.assertEqual(url, ("http://api.football-data.org/v1/competitions/"
-#                                "445/matches?matchday=1&timeFrame=n14"))
+    def test__build_url(self):
+        """
+        Tests for the football._build_url function.
+        """
+        # General tests
+        url = self.football._build_url('competitions')
+        self.assertEqual(url, 'https://api.football-data.org/v2/competitions')
+        url = self.football._build_url('competitions', {'season': 2015})
+        self.assertEqual(
+            url, 'https://api.football-data.org/v2/competitions/?season=2015')
+        url = self.football._build_url(
+            'competitions/2015/matches', {'matchday': 1, 'status': 'FINISHED'})
+        self.assertEqual(url, ('https://api.football-data.org/v2/competitions/'
+                               '2015/matches/?matchday=1&status=FINISHED'))
 
 
 if __name__ == '__main__':
