@@ -37,11 +37,16 @@ class FootballData(object):
 
         self.api_key = api_key
         self.headers = {'X-Auth-Token': api_key}
+        self.error = {
+            'code': None,
+            'msg': ''
+        }
 
     def competitions(self):
         """
         List all available competitions.
         """
+        self._clear_error()
 
         url = self._build_url('competitions')
         res = self._api_request(url)
@@ -56,6 +61,7 @@ class FootballData(object):
         """
         List one particular competition.
         """
+        self._clear_error()
 
         url = self._build_url(f'competitions/{competition}')
         res = self._api_request(url)
@@ -71,6 +77,7 @@ class FootballData(object):
         """
         List all teams for a particular competition.
         """
+        self._clear_error()
 
         # competition could be an id or a code like 'WC'
         query_params = {}
@@ -94,6 +101,7 @@ class FootballData(object):
         """
         List all matches for a particular competition.
         """
+        self._clear_error()
 
         query_params = {}
 
@@ -133,6 +141,8 @@ class FootballData(object):
         """
         List matches across (a set of) competitions.
         """
+        self._clear_error()
+
         query_params = {}
         # Error checking for query parameter dateFrom
         if dateFrom and dateTo:
@@ -164,6 +174,8 @@ class FootballData(object):
         """
         Show one particular match.
         """
+        self._clear_error()
+
         url = self._build_url(f'matches/{match_id}')
         res = self._api_request(url)
         if res:
@@ -176,6 +188,7 @@ class FootballData(object):
         """
         Show all matches for a particular team.
         """
+        self._clear_error()
 
         query_params = {}
 
@@ -216,6 +229,7 @@ class FootballData(object):
         """
         Show one particular team.
         """
+        self._clear_error()
 
         url = self._build_url(f'teams/{team_id}')
         res = self._api_request(url)
@@ -224,6 +238,10 @@ class FootballData(object):
             return json_tmp
         else:
             return None
+
+    def _clear_error(self):
+        self.error['code'] = None
+        self.error['msg'] = ''
 
     def _build_url(self, action, query_params=None):
         """
@@ -246,7 +264,10 @@ class FootballData(object):
             res_raw = requests.get(url, headers=self.headers)
             res = res_raw.json()
             if 'errorCode' in res or 'error' in res:
+                err = res.get('error') or res.get('errorCode')
                 msg = res['message']
+                self.error['code'] = err
+                self.error['msg'] = msg
                 logger.error(msg)
                 return False
             else:

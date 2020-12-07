@@ -48,7 +48,12 @@ class FootballDataTest(unittest.TestCase):
         """
         Tests for the football.competition_teams function.
         """
+
+        competition_teams = self.football.competition_teams(2022)
+        self.assertTrue(self.football.error['code'] == 403)
+
         competition_teams = self.football.competition_teams(2019)
+        self.assertTrue(self.football.error['code'] == None)
         teams_short_names = [team.shortName for team in competition_teams]
         self.assertTrue('Verona' in teams_short_names)
         competition_teams = self.football.competition_teams('WC')
