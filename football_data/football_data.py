@@ -99,7 +99,7 @@ class FootballData(object):
             json_tmp = json2obj(res)
             return json_tmp.teams
         else:
-            logger.error(f'teams: no data found')
+            self.logger.error(f'teams: no data found')
             return None
 
     def competition_matches(self, competition, dateFrom=None, dateTo=None, stage=None, status=None, matchday=None, group=None, season=None):
@@ -113,12 +113,12 @@ class FootballData(object):
         # Error checking for query parameter dateFrom
         if dateFrom and dateTo:
             if not validate_date(dateFrom) or not validate_date(dateTo):
-                logger.error(f'competition_matches: invalid dateFrom/dateTo')
+                self.logger.error(f'competition_matches: invalid dateFrom/dateTo')
                 return []
             query_params['dateFrom'] = dateFrom
             query_params['dateTo'] = dateTo
         elif dateFrom or dateTo:
-            logger.error(
+            self.logger.error(
                 'competition_matches: pecify both dateFrom and dateTo or none')
             return []
         if stage:
@@ -152,12 +152,12 @@ class FootballData(object):
         # Error checking for query parameter dateFrom
         if dateFrom and dateTo:
             if not validate_date(dateFrom) or not validate_date(dateTo):
-                logger.error(f'matches: invalid dateFrom/dateTo')
+                self.logger.error(f'matches: invalid dateFrom/dateTo')
                 return []
             query_params['dateFrom'] = dateFrom
             query_params['dateTo'] = dateTo
         elif dateFrom or dateTo:
-            logger.error('matches specify both dateFrom and dateTo or none')
+            self.logger.error('matches specify both dateFrom and dateTo or none')
             return []
 
         # COMMA-separated list of competitions, e.g. 2000,2001 or WC,CL
@@ -200,26 +200,26 @@ class FootballData(object):
         # Error checking for query parameter dateFrom
         if dateFrom and dateTo:
             if not validate_date(dateFrom) or not validate_date(dateTo):
-                logger.error(f'team_matches: invalid dateFrom/dateTo')
+                self.logger.error(f'team_matches: invalid dateFrom/dateTo')
                 return []
             query_params['dateFrom'] = dateFrom
             query_params['dateTo'] = dateTo
         elif dateFrom or dateTo:
-            logger.error(
+            self.logger.error(
                 'team_matches specify both dateFrom and dateTo or none')
             return []
 
         # Error checking for query parameter venue
         if venue:
             if venue not in ('HOME', 'AWAY'):
-                logger.error('venue is invalid.')
+                self.logger.error('venue is invalid.')
                 return []
             query_params['venue'] = venue
         if limit:
             if isinstance(limit, int):
                 query_params['limit'] = limit
             else:
-                logger.error('limit is invalid.')
+                self.logger.error('limit is invalid.')
                 return []
 
         url = self._build_url(f'teams/{team_id}/matches', query_params)
@@ -273,11 +273,11 @@ class FootballData(object):
                 msg = res['message']
                 self.error['code'] = err
                 self.error['msg'] = msg
-                logger.error(msg)
+                self.logger.error(msg)
                 return False
             else:
                 return res if json_format else res_raw.content
         except:
             msg = 'requests.get error'
-            logger.error(msg)
+            self.logger.error(msg)
             return False
