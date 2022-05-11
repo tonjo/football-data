@@ -13,7 +13,6 @@ import logging
 logging.basicConfig(format="%(asctime)s: %(levelname)s: %(name)s: %(message)s")
 
 logging_levels = {
-    'VERBOSE': logging.VERBOSE,
     'DEBUG': logging.DEBUG,
     'INFO': logging.INFO,
     'ERROR': logging.ERROR

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="football_data",
-    version="0.5.0",
+    version="0.6.0",
     packages=find_packages(),
     description="A Python wrapper around the football-data API.",
     url="https://github.com/tonjo/football-data",
