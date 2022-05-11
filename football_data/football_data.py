@@ -10,12 +10,14 @@ from .constants import LEAGUE_CODE, TEAM_ID
 from .utils import json2obj, validate_date
 
 import logging
-logging.basicConfig(
-    format="%(asctime)s: %(levelname)s: %(name)s: %(message)s")
+logging.basicConfig(format="%(asctime)s: %(levelname)s: %(name)s: %(message)s")
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
+logging_levels = {
+    'VERBOSE': logging.VERBOSE,
+    'DEBUG': logging.DEBUG,
+    'INFO': logging.INFO,
+    'ERROR': logging.ERROR
+}
 
 class FootballData(object):
     """
@@ -24,10 +26,13 @@ class FootballData(object):
 
     API_URL = 'https://api.football-data.org/v2/'
 
-    def __init__(self, api_key=None):
+    def __init__(self, api_key=None, log_level='INFO'):
         """
         Initialise a new instance of the FootballData class.
         """
+        self.logger = logging.getLogger()
+        self.logger.setLevel(log_level)
+
         if not api_key:
             if 'FOOTBALL_DATA_API_KEY' in os.environ:
                 api_key = os.environ['FOOTBALL_DATA_API_KEY']
