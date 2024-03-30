@@ -162,13 +162,13 @@ class FootballDataTest(unittest.TestCase):
         """
         # General tests
         url = self.football._build_url('competitions')
-        self.assertEqual(url, 'https://api.football-data.org/v2/competitions')
+        self.assertEqual(url, 'https://api.football-data.org/v4/competitions')
         url = self.football._build_url('competitions', {'season': 2015})
         self.assertEqual(
-            url, 'https://api.football-data.org/v2/competitions/?season=2015')
+            url, 'https://api.football-data.org/v4/competitions/?season=2015')
         url = self.football._build_url(
             'competitions/2015/matches', {'matchday': 1, 'status': 'FINISHED'})
-        self.assertEqual(url, ('https://api.football-data.org/v2/competitions/'
+        self.assertEqual(url, ('https://api.football-data.org/v4/competitions/'
                                '2015/matches/?matchday=1&status=FINISHED'))
 
 
