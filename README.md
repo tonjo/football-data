@@ -1,4 +1,6 @@
-### WORK IN PROGRESS
+
+# ⚰️ DEPRECATED
+### included directly in other projects
 
 ## football_data
 
